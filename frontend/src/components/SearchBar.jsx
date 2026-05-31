@@ -59,7 +59,7 @@ export default function SearchBar({ features, onSelect }) {
         className={`flex items-center gap-2 bg-white/10 backdrop-blur-md border rounded-full shadow-md transition-all duration-300 ease-in-out overflow-hidden ${
           expanded
             ? 'w-[480px] py-2.5 px-4 border-white/40 ring-2 ring-green-400/30'
-            : 'w-[160px] py-2 px-4 border-white/20 cursor-pointer'
+            : 'w-[160px] py-2 px-4 border-green-400/40 hover:border-green-400/70 cursor-pointer'
         }`}
         onClick={() => !expanded && setExpanded(true)}
       >

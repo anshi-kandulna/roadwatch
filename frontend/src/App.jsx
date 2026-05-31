@@ -70,7 +70,7 @@ export default function App() {
       <button
         type="button"
         onClick={() => setReportModalOpen(true)}
-        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 px-5 py-3 rounded-2xl bg-red-500/20 hover:bg-red-500/30 border border-red-400/35 hover:border-red-400/60 text-red-200 hover:text-white text-sm font-medium backdrop-blur-md shadow-[0_0_20px_rgba(239,68,68,0.12)] hover:shadow-[0_0_28px_rgba(239,68,68,0.25)] transition-all duration-200"
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2 px-5 py-3 rounded-2xl bg-red-800/80 hover:bg-red-700/90 border border-red-500/60 hover:border-red-400/80 text-red-200 hover:text-white text-sm font-medium backdrop-blur-md shadow-[0_0_20px_rgba(239,68,68,0.12)] hover:shadow-[0_0_28px_rgba(239,68,68,0.25)] transition-all duration-200"
       >
         <AlertTriangle size={15} strokeWidth={2} />
         Report Road Issue
@@ -84,7 +84,7 @@ export default function App() {
         />
       )}
 
-      <ChatBot />
+      <ChatBot sidebarOpen={sidebarVisible} />
     </div>
   )
 }

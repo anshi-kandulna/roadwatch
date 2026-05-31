@@ -14,18 +14,7 @@ const PANEL_GAP = 12
 const WELCOME_MESSAGE =
   "Hi! I'm your RoadWatch assistant. Click on any road segment or ask me about road conditions and projects."
 
-function getResponse(message) {
-  const m = message.toLowerCase()
-  if (m.includes('pothole'))
-    return 'We have 143 reported potholes across active segments. The highest density is on NH-31 near Dhanbad.'
-  if (m.includes('project'))
-    return 'There are 27 active road projects in the current view. 8 are marked high priority.'
-  if (m.includes('status'))
-    return 'System is live. Last data sync: 2 hours ago.'
-  if (m.includes('hello') || m.includes('hi'))
-    return "Hi! I'm the RoadWatch assistant. Ask me about road conditions, projects, or defects."
-  return "I don't have that information yet. Try asking about potholes, projects, or road status."
-}
+
 
 function clampPosition(x, y, width, height) {
   const maxX = Math.max(0, window.innerWidth - width)
@@ -46,10 +35,12 @@ function getDefaultPosition(width, height) {
 }
 
 function formatTime(date) {
+  if (!date) return ''
+  if (typeof date === 'string') return date
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
-export default function ChatBot() {
+export default function ChatBot({ sidebarOpen }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
@@ -110,33 +101,76 @@ export default function ChatBot() {
     el.style.height = `${Math.min(el.scrollHeight, maxHeight)}px`
   }
 
-  function handleSend() {
-    const text = input.trim()
-    if (!text || isTyping) return
+  async function sendMessage(userText) {
+    if (!userText.trim()) return
 
-    const userMsg = { role: 'user', text, time: new Date() }
-    setMessages(prev => [...prev, userMsg])
+    // Add user message
+    setMessages(prev => [...prev, {
+      role: 'user',
+      text: userText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }])
     setInput('')
     if (inputRef.current) {
       inputRef.current.style.height = 'auto'
     }
-
     setIsTyping(true)
-    const delay = 600 + Math.random() * 300
 
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          max_tokens: 300,
+          messages: [
+            {
+              role: 'system',
+              content: `You are RoadWatch AI, an intelligent assistant for a road defect monitoring platform in India. 
+You help users understand road conditions, ongoing projects, defect reports, and maintenance status on National Highways.
+Be concise, helpful, and professional. Keep responses under 100 words unless detail is specifically requested.
+If asked about specific road data you don't have, suggest the user click on a road segment on the map for live data.`
+            },
+            // pass last 6 messages as context
+            ...messages.slice(-6).map(m => ({
+              role: m.role === 'user' ? 'user' : 'assistant',
+              content: m.text
+            })),
+            {
+              role: 'user',
+              content: userText
+            }
+          ]
+        })
+      })
+
+      const data = await response.json()
+      const reply = data.choices?.[0]?.message?.content || "I couldn't get a response. Please try again."
+
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        text: reply,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }])
+
+    } catch (err) {
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        text: "Connection error. Please check your network and try again.",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }])
+    } finally {
       setIsTyping(false)
-      setMessages(prev => [
-        ...prev,
-        { role: 'assistant', text: getResponse(text), time: new Date() },
-      ])
-    }, delay)
+    }
   }
 
   function handleKeyDown(e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSend()
+      sendMessage(input)
     }
   }
 
@@ -205,15 +239,18 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating trigger */}
-      <div className="fixed bottom-6 right-6 z-[10002]">
+      <div
+        className={`fixed bottom-6 z-[10002] transition-all duration-300 ${
+          sidebarOpen ? 'right-[374px]' : 'right-6'
+        }`}
+      >
         {!isOpen && (
           <span className="absolute inset-0 rounded-full bg-green-600/30 animate-chat-pulse pointer-events-none" />
         )}
         <button
           onClick={handleToggle}
           aria-label={isOpen ? 'Close chat' : 'Open chat assistant'}
-          className="relative flex items-center justify-center w-[52px] h-[52px] rounded-full bg-green-500/80 backdrop-blur-md border border-green-400/30 text-white shadow-lg transition-all duration-150 ease-out hover:scale-105 hover:shadow-xl active:scale-95"
+          className="relative flex items-center justify-center w-[52px] h-[52px] rounded-full bg-green-500/80 backdrop-blur-md border-2 border-green-400/50 hover:border-green-400/80 text-white shadow-lg transition-all duration-150 ease-out hover:scale-105 hover:shadow-xl active:scale-95"
         >
           {isOpen ? (
             <X size={22} strokeWidth={2} />
@@ -304,7 +341,7 @@ export default function ChatBot() {
               className="flex-1 resize-none px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-700/50 bg-white/10 border border-white/15 rounded-lg outline-none focus:border-green-400/40 focus:ring-2 focus:ring-green-400/20 transition-all duration-150 leading-5 backdrop-blur-sm"
             />
             <button
-              onClick={handleSend}
+              onClick={() => sendMessage(input)}
               disabled={!input.trim() || isTyping}
               className="shrink-0 p-2.5 bg-green-500/80 backdrop-blur-md border border-green-400/30 hover:bg-green-600/80 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-150 active:scale-95"
             >

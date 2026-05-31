@@ -3,9 +3,9 @@ import { X, Camera, Mail, Loader2, CheckCircle2 } from 'lucide-react'
 import { findNearestPIU } from './findNearestPIU'
 
 const inputClass =
-  'w-full rounded-xl px-3 py-2.5 text-sm bg-white/8 border border-white/15 text-white placeholder:text-white/30 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-400/40 focus:border-green-400/40 transition-all duration-150'
+  'w-full rounded-xl px-3 py-2.5 text-sm bg-white/12 border border-white/20 text-white placeholder:text-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-green-400/40 focus:border-green-400/40 transition-all duration-150'
 
-const labelClass = 'text-white/70 text-xs font-medium uppercase tracking-wide'
+const labelClass = 'text-white/90 text-xs font-medium uppercase tracking-wide'
 
 const submitClass =
   'w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-medium text-sm bg-green-400/30 hover:bg-green-400/50 border border-green-400/50 hover:border-green-400/80 text-green-200 hover:text-white backdrop-blur-sm transition-all duration-150 shadow-[0_0_12px_rgba(74,222,128,0.15)] hover:shadow-[0_0_20px_rgba(74,222,128,0.3)]'
@@ -152,7 +152,7 @@ Reported via RoadWatch App`
 
   return (
     <div className="fixed inset-0 z-[2000] flex items-center justify-center px-4 bg-black/20 backdrop-blur-sm animate-fade-in">
-      <div className="w-full max-w-xl max-h-[85vh] overflow-y-auto bg-white/15 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl p-8 flex flex-col gap-5 sidebar-scroll">
+      <div className="w-full max-w-xl max-h-[85vh] overflow-y-auto bg-black/45 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl p-8 flex flex-col gap-5 sidebar-scroll">
         <div className="flex items-center justify-between shrink-0">
           <h3 className="text-base font-semibold text-white">Report Defect — {nhName}</h3>
           <button
@@ -170,7 +170,7 @@ Reported via RoadWatch App`
                   Tip: click a road segment first to auto-fill location
                 </p>
               )}
-              <p className="text-sm text-white/60 text-center">
+              <p className="text-sm text-white/80 text-center">
                 Take a photo of the road defect
               </p>
 
@@ -212,7 +212,7 @@ Reported via RoadWatch App`
                   className="w-full rounded-lg mb-4 border border-white/15"
                 />
               )}
-              <div className="flex items-center justify-center gap-2 text-white/60">
+              <div className="flex items-center justify-center gap-2 text-white/80">
                 <Loader2 size={18} className="animate-spin" />
                 <p className="text-sm">{vlmStatus}</p>
               </div>
@@ -276,7 +276,7 @@ Reported via RoadWatch App`
         {step === 'done' && (
             <div className="flex flex-col gap-5 text-center py-2">
               <CheckCircle2 size={40} className="mx-auto text-green-400 mb-3" />
-              <p className="text-sm text-white/60">
+              <p className="text-sm text-white/80">
                 Email app opened with report pre-filled.
               </p>
               <button

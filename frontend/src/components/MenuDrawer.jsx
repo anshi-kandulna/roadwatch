@@ -1,8 +1,6 @@
-import { Menu, X, LayoutDashboard, FileText, Settings, Info } from 'lucide-react'
+import { Menu, X, Settings, Info } from 'lucide-react'
 
 const MENU_ITEMS = [
-  { label: 'Dashboard', icon: LayoutDashboard },
-  { label: 'Reports', icon: FileText },
   { label: 'Settings', icon: Settings },
   { label: 'About', icon: Info },
 ]
@@ -56,12 +54,14 @@ export default function MenuDrawer({ open, onClose }) {
 
 export function MenuButton({ onClick }) {
   return (
-    <button
-      onClick={onClick}
-      className="p-2 text-white/80 hover:text-white hover:bg-white/15 rounded-lg transition-all duration-150 drop-shadow-sm"
-      aria-label="Open menu"
-    >
-      <Menu size={20} strokeWidth={2} />
-    </button>
+    <div className="relative z-10 pointer-events-auto">
+      <button
+        onClick={onClick}
+        className="p-2 text-white/80 hover:text-white hover:bg-white/15 rounded-lg transition-all duration-150 drop-shadow-sm border border-green-400/40 hover:border-green-400/70"
+        aria-label="Open menu"
+      >
+        <Menu size={22} strokeWidth={2.5} className="text-zinc-800" />
+      </button>
+    </div>
   )
 }

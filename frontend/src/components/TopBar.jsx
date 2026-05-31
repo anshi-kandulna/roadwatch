@@ -16,9 +16,7 @@ export default function TopBar({ onMenuOpen }) {
               <path d="M4 10H10" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </div>
-          <span className="text-sm font-semibold text-white tracking-tight drop-shadow-sm">
-            RoadWatch
-          </span>
+          <span className="relative z-10 text-2xl font-bold text-zinc-700">RoadWatch</span>
         </div>
 
         <MenuButton onClick={onMenuOpen} />

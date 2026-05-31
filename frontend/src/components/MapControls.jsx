@@ -5,7 +5,7 @@ function ControlButton({ onClick, label, children, active }) {
     <button
       onClick={onClick}
       aria-label={label}
-      className={`flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg text-zinc-900 drop-shadow-sm transition-all duration-150 ease-out hover:bg-white/20 hover:scale-105 active:scale-95 ${
+      className={`flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-green-400/40 hover:border-green-400/70 shadow-lg text-zinc-900 drop-shadow-sm transition-all duration-150 ease-out hover:bg-white/20 hover:scale-105 active:scale-95 ${
         active ? 'bg-white/25 border-white/40' : ''
       }`}
     >
