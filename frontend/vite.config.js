@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
@@ -28,7 +30,7 @@ export default defineConfig({
         name: 'RoadWatch',
         short_name: 'RoadWatch',
         description: 'National Highway monitoring and defect reporting',
-        theme_color: '#e85d04',
+        theme_color: '#16a34a',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
