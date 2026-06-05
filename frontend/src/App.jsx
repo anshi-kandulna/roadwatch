@@ -52,7 +52,7 @@ export default function App() {
 
       <TopBar onMenuOpen={() => setMenuOpen(true)} />
 
-      <SearchBar features={features} onSelect={handleSearchSelect} />
+      <SearchBar features={features} onSelect={handleSearchSelect} sidebarOpen={sidebarVisible} />
 
       <MapControls mapRef={mapRef} />
 

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Search, X } from 'lucide-react'
 import { searchRoads } from '../utils'
 
-export default function SearchBar({ features, onSelect }) {
+export default function SearchBar({ features, onSelect, sidebarOpen }) {
   const [expanded, setExpanded] = useState(false)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
@@ -53,7 +53,9 @@ export default function SearchBar({ features, onSelect }) {
   return (
     <div
       ref={containerRef}
-      className="fixed top-16 left-1/2 -translate-x-1/2 z-[10000] flex flex-col items-center"
+      className={`fixed top-16 left-1/2 -translate-x-1/2 z-[10000] flex flex-col items-center transition-[opacity,transform] duration-200 ${
+        sidebarOpen ? 'sm:opacity-100 sm:pointer-events-auto opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
+      }`}
     >
       <div
         className={`flex items-center gap-2 bg-white/10 backdrop-blur-md border rounded-full shadow-md transition-all duration-300 ease-in-out overflow-hidden ${
