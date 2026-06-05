@@ -56,7 +56,10 @@ export default function App() {
 
       <MapControls mapRef={mapRef} />
 
-      <MenuDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MenuDrawer
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      />
 
       {selectedNH && (
         <Sidebar

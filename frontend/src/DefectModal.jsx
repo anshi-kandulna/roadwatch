@@ -14,7 +14,6 @@ export default function DefectModal({ nhName, hasSelectedRoad = true, onClose })
   const [step, setStep] = useState('camera')
   const [photoURL, setPhotoURL] = useState(null)
   const [vlmStatus, setVlmStatus] = useState('Analyzing damage...')
-  const [userDescription, setUserDescription] = useState('')
   const [assessmentText, setAssessmentText] = useState('[Please describe the defect here]')
   const [nearestPIU, setNearestPIU] = useState(null)
   const [location, setLocation] = useState(null)
@@ -25,17 +24,13 @@ export default function DefectModal({ nhName, hasSelectedRoad = true, onClose })
   })
   const fileRef = useRef(null)
 
-  function buildBody(description, loc, piu, userDesc) {
+  function buildBody(description, loc, piu) {
     const locationStr = loc
       ? `GPS: ${loc.lat.toFixed(5)}, ${loc.lng.toFixed(5)}`
       : 'Location unavailable'
     const officeStr = piu
       ? `Nearest Office: ${piu.piu_city} (${piu.ro_name})`
       : 'Nearest Office: Unknown'
-
-    const userSection = userDesc?.trim()
-      ? `User Description:\n${userDesc.trim()}\n\n`
-      : ''
 
     return `Defect Report
 ═══════════════════════════
@@ -44,16 +39,16 @@ ${officeStr}
 ${locationStr}
 Reported at: ${new Date().toLocaleString()}
 
-${userSection}${description}
+${description}
 
 ═══════════════════════════
 Reported via RoadWatch App`
   }
 
-  function syncEmailBody(description, loc, piu, userDesc) {
+  function syncEmailBody(description, loc, piu) {
     setEmail(prev => ({
       ...prev,
-      body: buildBody(description, loc, piu, userDesc),
+      body: buildBody(description, loc, piu),
     }))
   }
 
@@ -71,20 +66,15 @@ Reported via RoadWatch App`
           ...prev,
           to: piu?.best_email || '',
           subject: `Road Defect Report - ${nhName}${piu ? ' - ' + piu.piu_city : ''}`,
-          body: buildBody(assessmentText, loc, piu, userDescription),
+          body: buildBody(assessmentText, loc, piu),
         }))
       },
       err => {
         console.error('GPS failed:', err)
-        syncEmailBody(assessmentText, null, null, userDescription)
+        syncEmailBody(assessmentText, null, null)
       }
     )
   }, [])
-
-  function handleDescriptionChange(value) {
-    setUserDescription(value)
-    syncEmailBody(assessmentText, location, nearestPIU, value)
-  }
 
   async function handlePhoto(e) {
     const file = e.target.files[0]
@@ -140,7 +130,7 @@ Reported via RoadWatch App`
     }
 
     setAssessmentText(description)
-    syncEmailBody(description, location, nearestPIU, userDescription)
+    syncEmailBody(description, location, nearestPIU)
     setStep('edit')
   }
 
@@ -174,16 +164,7 @@ Reported via RoadWatch App`
                 Take a photo of the road defect
               </p>
 
-              <div className="flex flex-col gap-1.5">
-                <label className={labelClass}>Description</label>
-                <textarea
-                  rows={4}
-                  value={userDescription}
-                  onChange={e => handleDescriptionChange(e.target.value)}
-                  placeholder="Describe the issue in detail — size, severity, exact location, hazard level..."
-                  className={`${inputClass} resize-none`}
-                />
-              </div>
+
 
               <input
                 ref={fileRef}
@@ -229,16 +210,7 @@ Reported via RoadWatch App`
                 />
               )}
 
-              <div className="flex flex-col gap-1.5">
-                <label className={labelClass}>Description</label>
-                <textarea
-                  rows={4}
-                  value={userDescription}
-                  onChange={e => handleDescriptionChange(e.target.value)}
-                  placeholder="Describe the issue in detail — size, severity, exact location, hazard level..."
-                  className={`${inputClass} resize-none`}
-                />
-              </div>
+
 
               <div className="flex flex-col gap-1.5">
                 <label className={labelClass}>To</label>

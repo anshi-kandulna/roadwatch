@@ -165,3 +165,30 @@ body {
   border: none;
   box-shadow: none;
 }
+
+.road-tooltip {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 8px !important;
+  color: white !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  padding: 4px 10px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+  white-space: nowrap !important;
+}
+
+.road-tooltip::before {
+  display: none !important;
+}
+
+.leaflet-interactive:focus {
+  outline: none !important;
+}
+
+path.leaflet-interactive:focus {
+  outline: none !important;
+}
+

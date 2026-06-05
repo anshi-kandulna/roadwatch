@@ -214,6 +214,7 @@ const RoadMap = forwardRef(function RoadMap(
       INITIAL_VIEW.center,
       INITIAL_VIEW.zoom
     )
+    map.getContainer().focus = () => {}
     mapInstanceRef.current = map
 
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -242,6 +243,12 @@ const RoadMap = forwardRef(function RoadMap(
               projectsByNameRef.current.set(name, feature.properties?.projects)
               featureByNameRef.current.set(name, feature)
             }
+
+            const displayName = feature.properties?.nh_name || feature.properties?.road_name || feature.properties?.Name || feature.properties?.name || 'Unknown NH'
+            layer.bindTooltip(displayName, {
+              sticky: true,
+              className: 'road-tooltip',
+            })
 
             layer.on('mouseover', () => {
               if (layer === activeLayerRef.current) return
@@ -299,6 +306,8 @@ const RoadMap = forwardRef(function RoadMap(
 
     selectSegment(selectedNH.Name, map)
   }, [selectedNH])
+
+
 
   return (
     <div
