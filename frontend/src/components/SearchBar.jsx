@@ -53,12 +53,12 @@ export default function SearchBar({ features, onSelect }) {
   return (
     <div
       ref={containerRef}
-      className="fixed top-16 left-1/2 -translate-x-1/2 z-[9998] flex flex-col items-center"
+      className="fixed top-16 left-1/2 -translate-x-1/2 z-[10000] flex flex-col items-center"
     >
       <div
         className={`flex items-center gap-2 bg-white/10 backdrop-blur-md border rounded-full shadow-md transition-all duration-300 ease-in-out overflow-hidden ${
           expanded
-            ? 'w-[480px] py-2.5 px-4 border-white/40 ring-2 ring-green-400/30'
+            ? 'w-[calc(100vw-32px)] max-w-[480px] py-2.5 px-4 border-white/40 ring-2 ring-green-400/30'
             : 'w-[160px] py-2 px-4 border-green-400/40 hover:border-green-400/70 cursor-pointer'
         }`}
         onClick={() => !expanded && setExpanded(true)}
@@ -90,7 +90,7 @@ export default function SearchBar({ features, onSelect }) {
       </div>
 
       {expanded && results.length > 0 && (
-        <div className="w-[480px] mt-2 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl shadow-xl overflow-hidden">
+        <div className="w-[calc(100vw-32px)] max-w-[480px] mt-2 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl shadow-xl overflow-hidden">
           {results.map((result, i) => (
             <button
               key={result.name}
@@ -111,7 +111,7 @@ export default function SearchBar({ features, onSelect }) {
       )}
 
       {expanded && query && results.length === 0 && (
-        <div className="w-[480px] mt-2 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl shadow-xl px-4 py-3 animate-suggestion-in">
+        <div className="w-[calc(100vw-32px)] max-w-[480px] mt-2 bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl shadow-xl px-4 py-3 animate-suggestion-in">
           <p className="text-sm text-zinc-700/60 drop-shadow-sm">No results for "{query}"</p>
         </div>
       )}

@@ -68,7 +68,9 @@ export default function ChatBot({ sidebarOpen }) {
       setIsClosing(false)
       requestAnimationFrame(() => setIsVisible(true))
       setPosition(getDefaultPosition(size.width, size.height))
-      setMessages([{ role: 'assistant', text: WELCOME_MESSAGE, time: new Date() }])
+      if (messages.length === 0) {
+        setMessages([{ role: 'assistant', text: WELCOME_MESSAGE, time: new Date() }])
+      }
       setTimeout(() => inputRef.current?.focus(), 220)
     } else {
       setIsVisible(false)
@@ -81,7 +83,6 @@ export default function ChatBot({ sidebarOpen }) {
     setTimeout(() => {
       setIsOpen(false)
       setIsClosing(false)
-      setMessages([])
       setInput('')
       setIsTyping(false)
     }, 200)

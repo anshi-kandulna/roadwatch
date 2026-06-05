@@ -141,13 +141,13 @@ Reported via RoadWatch App`
   }
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center px-4 bg-black/20 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-[10001] flex items-center justify-center px-4 bg-black/20 backdrop-blur-sm animate-fade-in">
       <div className="w-full max-w-xl max-h-[85vh] overflow-y-auto bg-black/45 backdrop-blur-2xl border border-white/20 rounded-3xl shadow-2xl p-8 flex flex-col gap-5 sidebar-scroll">
         <div className="flex items-center justify-between shrink-0">
-          <h3 className="text-base font-semibold text-white">Report Defect — {nhName}</h3>
+          <h3 className="text-base font-semibold text-white pr-4">Report Defect — {nhName}</h3>
           <button
             onClick={onClose}
-            className="p-1.5 text-white/50 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-150"
+            className="shrink-0 p-1.5 text-white/50 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-150"
           >
             <X size={16} strokeWidth={2} />
           </button>

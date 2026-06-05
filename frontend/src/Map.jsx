@@ -27,7 +27,10 @@ const HALO_STYLE = {
 }
 
 const SIDEBAR_WIDTH = 350
-const INITIAL_VIEW = { center: [22.5, 80.0], zoom: 5 }
+const INITIAL_VIEW = {
+  center: [22.5, 80.0],
+  zoom: window.innerWidth < 640 ? 4 : 5
+}
 
 function applyDefaultStyle(layer, projects) {
   const color = getSegmentColor(projects)
@@ -214,7 +217,7 @@ const RoadMap = forwardRef(function RoadMap(
       INITIAL_VIEW.center,
       INITIAL_VIEW.zoom
     )
-    map.getContainer().focus = () => {}
+    map.getContainer().focus = () => { }
     mapInstanceRef.current = map
 
     const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
